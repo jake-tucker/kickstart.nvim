@@ -793,6 +793,8 @@ do
   vim.list_extend(ensure_installed, {
     -- You can add other tools here that you want Mason to install
     'csharpier',
+    'prettier',
+    'xmlformatter',
   })
 
   require('mason-tool-installer').setup { ensure_installed = ensure_installed }
@@ -816,6 +818,9 @@ do
       -- You can specify filetypes to autoformat on save here:
       local enabled_filetypes = {
         cs = true,
+        json = true,
+        jsonc = true,
+        xml = true,
         -- lua = true,
         -- python = true,
       }
@@ -831,6 +836,9 @@ do
     -- You can also specify external formatters in here.
     formatters_by_ft = {
       cs = { 'csharpier' },
+      json = { 'prettier' },
+      jsonc = { 'prettier' },
+      xml = { 'xmlformatter' },
       -- rust = { 'rustfmt' },
       -- Conform can also run multiple formatters sequentially
       -- python = { "isort", "black" },
