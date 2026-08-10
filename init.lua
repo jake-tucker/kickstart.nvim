@@ -411,7 +411,8 @@ do
     -- Document existing key chains
     spec = {
       { '<leader>s', group = '[S]earch', mode = { 'n', 'v' } },
-      { '<leader>t', group = '[T]oggle' },
+      { '<leader>t', group = '[T]est / [T]oggle' },
+      { '<leader>d', group = '[D]ebug' },
       { '<leader>h', group = 'Git [H]unk', mode = { 'n', 'v' } }, -- Enable gitsigns recommended keymaps first
       { 'gr', group = 'LSP Actions', mode = { 'n' } },
     },
@@ -793,12 +794,16 @@ do
   --
   -- You can press `g?` for help in this menu.
   local ensure_installed = vim.tbl_keys(servers or {})
-  vim.list_extend(ensure_installed, {
+  local tools = {
     -- You can add other tools here that you want Mason to install
     'csharpier',
     'prettier',
     'xmlformatter',
-  })
+  }
+  local uname = vim.uv.os_uname()
+  -- TODO: Let Mason manage every platform once its netcoredbg package uses 3.2.0+ for macOS arm64.
+  if uname.sysname ~= 'Darwin' or uname.machine ~= 'arm64' then table.insert(tools, 'netcoredbg') end
+  vim.list_extend(ensure_installed, tools)
 
   require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
@@ -1022,7 +1027,7 @@ do
   -- NOTE: You can add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
   --
   --  Uncomment the following line and add your plugins to `lua/custom/plugins/*.lua` to get going.
-  -- require 'custom.plugins'
+  require 'custom.plugins'
 end
 
 -- The line beneath this is called `modeline`. See `:help modeline`
